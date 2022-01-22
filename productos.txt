@@ -1,0 +1,20 @@
+[
+	{
+		"title": "Escuadra",
+		"price": 150,
+		"thumbnail": "https://direccion",
+		"id": 1
+	},
+	{
+		"title": "Calculadora",
+		"price": 450,
+		"thumbnail": "https://direccion2",
+		"id": 2
+	},
+	{
+		"title": "Globo Terraqueo",
+		"price": 350,
+		"thumbnail": "https://direccion3",
+		"id": 3
+	}
+]

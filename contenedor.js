@@ -13,13 +13,14 @@ class Contenedor {
 
   async save(title, price, url) {
     try {
-      let newProduct = new Producto(title, price, url);
+      let newProduct = {title, price, url};
       newProduct.id = this.productos.length + 1;
       this.productos.push(newProduct);
       await fs.promises.writeFile(
-        this.archivo,
-        JSON.stringify(this.productos, null, "\t")
-      );
+        this.archivo, JSON.stringify(this.productos, null, "\t"));
+        console.log({ done: 'ok', producto: newProduct })
+        let resultado = { done: "Ok", producto: newProduct }
+        return resultado
     } catch (error) {
       console.log(error);
     }
@@ -28,6 +29,7 @@ class Contenedor {
   async getAll() {
     try {
       let archivo = await fs.promises.readFile(this.archivo, "utf-8");
+      console.log(JSON.parse(archivo))
       return JSON.parse(archivo);
     } catch (error) {
       return console.log(this.productos);
@@ -69,6 +71,7 @@ class Contenedor {
         this.archivo,
         JSON.stringify(this.productos, null)
       );
+      return { delete: 'Ok' }
     } catch (error) {
       return "Error! ID no existe";
     }
@@ -77,16 +80,3 @@ class Contenedor {
 
 module.exports = Contenedor;
 
-// let productosTXT = new Contenedor("./productos.txt");
-
-// productosTXT.save('Escuadra', 150, 'https://direccion')
-// productosTXT.save('Calculadora', 450, 'https://direccion2')
-// productosTXT.save('Globo Terraqueo', 350, 'https://direccion3')
-
-// productosTXT.getAll();
-
-// console.log(productosTXT.getById(2));
-
-// productosTXT.deleteById(2)
-
-// archivoProductos.deleteAll()

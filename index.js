@@ -4,21 +4,27 @@ const Contenedor = require("./contenedor");
 const PORT = 8080;
 let productos = new Contenedor("./productos.txt");
 
-app.get("/", (req, res, next) => {
-  res.send(
-    `<h2>Elija una opción</h2>
-    <ul> <li> <a href="/productos"> Productos </a> </li> <li> <a href="productoRandom"> Producto Random </a> </li> </ul>`
-  );
+app.use(express.static("public"));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+
+app.get("/api/productos", async (req, res) => {
+  res.json(await productos.getAll());
 });
 
-app.get("/productos", (req, res, next) => {
-  productos.getAll().then((resultado) => {
-    res.send(resultado);
-  });
+app.get("/api/productos/:id", (req, res) => {
+  res.json(productos.getById(req.params.id));
 });
 
-app.get("/productoRandom", (req, res, next) => {
-  res.send(productos.getRandom());
+app.post("/api/productos", async (req, res) => {
+  let { title, price, thumbnail } = req.body;
+  let producto = await productos.save(title, price, thumbnail);
+  res.json(producto);
+});
+
+app.delete("/api/productos/:id", async (req, res) => {
+  res.json(await productos.deleteById(req.params.id));
 });
 
 const server = app.listen(PORT, () => {
